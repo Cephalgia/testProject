@@ -7,11 +7,25 @@ public class Main {
         System.out.println("2. Sign up");
         Scanner sc = new Scanner(System.in);
         int choice = 1;
-        if (sc.hasNext()) {
-            choice = sc.nextInt();
-        }
+        User user;
+
         do {
-            User user = (choice == 1) ? Application.authenticate() : Application.registerNewUser();
+            if (sc.hasNext()) {
+                choice = sc.nextInt();
+            }
+            if(choice == 1){
+                user = Application.authenticate();
+            } else {
+                if(JsonUtils.getUsersNum() > Application.MAX_USERS_NUM){
+                    System.out.println("Reached the limit of users in the system");
+                    System.out.println("You can only log in");
+
+                    user = Application.authenticate();
+                } else {
+                    user = Application.registerNewUser();
+                }
+            }
+//            User user = (choice == 1) ? Application.authenticate() : Application.registerNewUser();
             UserThread userThread = new UserThread(user);
             userThread.start();
             try {

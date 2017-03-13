@@ -5,7 +5,7 @@ import java.util.Collection;
  */
 class User {
     private final String login;
-    private final byte[] password;
+    private byte[] password;
     private SystemAccess accessType;
     private PermissionLevel level;
     private PermissionLevel[] discPermission;
@@ -34,6 +34,10 @@ class User {
 
     byte[] getPassword() {
         return password;
+    }
+
+    public void setPassword(byte[] newPass){
+        password = newPass;
     }
 
     SystemAccess getPermissionType() {

@@ -12,3 +12,16 @@ Tue Feb 28 23:28:53 EET 2017  User qwer; got access to the file sf; Status: Allo
 Tue Feb 28 23:30:17 EET 2017  User dfg; got access to the file fg; Status: Allow
 Tue Feb 28 23:30:20 EET 2017  User dfg; got access to the file fg; Status: Allow
 Tue Feb 28 23:30:24 EET 2017  User dfg; got access to the file jkl; Status: Allow
+Mon Mar 13 17:27:15 EET 2017  User name; got access to the file nano; Status: Allow
+Mon Mar 13 17:31:56 EET 2017  User name; got access to the file ll; Status: Allow
+Mon Mar 13 17:35:00 EET 2017  User name; got access to the file lalala; Status: Allow
+Access denied. Mon Mar 13 17:35:07 EET 2017 User name; tried to get access to the file lalala
+Access denied. Mon Mar 13 17:58:42 EET 2017 User name; tried to get access to the file [Ljava.lang.String;@5b0027e6
+Access denied. Mon Mar 13 18:24:18 EET 2017 User name; tried to get access to the file [Ljava.lang.String;@61bbde52
+Mon Mar 13 18:24:32 EET 2017  User name; got access to the file [Ljava.lang.String;@6ab48251; Status: Allow
+Access denied. Mon Mar 13 18:48:17 EET 2017 User name; tried to get access to the file [Ljava.lang.String;@61bbde52
+Access denied. Mon Mar 13 18:48:42 EET 2017 User name; tried to get access to the file [Ljava.lang.String;@3d77c44b
+Mon Mar 13 18:49:13 EET 2017  User name; got access to the file [Ljava.lang.String;@1deddeb6; Status: Allow
+Mon Mar 13 18:50:59 EET 2017  User name; got access to the file [Ljava.lang.String;@7b81ba32; Status: Allow
+Access denied. Mon Mar 13 18:52:19 EET 2017 User name; tried to get access to the file [Ljava.lang.String;@61bbde52
+Mon Mar 13 19:49:37 EET 2017 User lal registered

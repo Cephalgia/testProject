@@ -38,6 +38,12 @@ class UserThread extends Thread {
     private void executeCommand(String line) {
         String[] divide = line.split(" ");
         String command = divide[0];
+        if(divide.length < 2){
+            System.out.println("Wrong command format");
+            return;
+        }
+
+
         String[] path = divide[1].split("/");
 
         boolean wrongCommand = false;

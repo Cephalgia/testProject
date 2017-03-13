@@ -69,4 +69,8 @@ class JsonUtils {
         }
         return false;
     }
+
+    public static int getUsersNum() {
+        return getUsers().size();
+    }
 }

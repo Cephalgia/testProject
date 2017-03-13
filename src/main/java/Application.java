@@ -12,6 +12,15 @@ class Application {
     private static int failedNumber = 0;
     private static final int failedCount = 5;
     private static User user;
+    public static final int MIN_PASS_LENGTH = 6;
+    public static final int MAX_USERS_NUM = 6;
+
+    private static float secretFunction(int x){
+        return x*x;
+//        return (float) (10*Math.sin((x)));
+//        return (float) (Math.sin((10*x)));
+    }
+
 
     public static boolean repeatChecking() {
         boolean fail = false;
@@ -32,7 +41,7 @@ class Application {
     private static void checkSecretFunction() throws IllegalArgumentException {
         short x = (short)(Math.random()*10);
         System.out.println("Enter secret answer (request = " + x + " ) ");
-        int secretValue = scanSecretFunction();
+        float secretValue = scanSecretFunction();
         checkSecretAnswer(x, secretValue);
     }
 
@@ -57,9 +66,8 @@ class Application {
         }
         return user;
     }
-
-    private static void checkSecretAnswer(short secretRequest, int secretAnswer) throws IllegalArgumentException {
-        if ((secretRequest*secretRequest) != secretAnswer) {
+    private static void checkSecretAnswer(short secretRequest, float secretAnswer) throws IllegalArgumentException {
+        if ((secretFunction(secretRequest)) != secretAnswer) {
             throw new IllegalArgumentException("Incorrect secret answer");
         }
     }
@@ -72,20 +80,10 @@ class Application {
         try {
             String login = scanLogin();
             String pass;
-            boolean flag;
-            do {
-                pass = scanPassword();
-                if(pass.length() < 6) {
-                    System.out.println("Your password is too short");
-                    flag = true;
-                } else {
-                    flag = false;
-                }
-            } while(flag);
-            byte[] passBytes = new byte[pass.length()];
-            for (int i = 0; i < pass.length(); i++) {
-               passBytes[i] = (byte)pass.charAt(i);
-            }
+            String secondPass;
+            boolean flag1;
+            boolean flag2;
+            byte[] passBytes = createPass();
             User.PermissionLevel[] pLevel = {User.PermissionLevel.NONE, User.PermissionLevel.NONE};
 
             user = new User(login, passBytes, pLevel);
@@ -97,7 +95,56 @@ class Application {
             System.err.println(e.getMessage());
             user.setAccessType(User.SystemAccess.Deny);
         }
+
+        String time = Calendar.getInstance().getTime().toString();
+        FileUtils.writeLog(time + " User " + user.getLogin() + " registered");
         return user;
+    }
+
+    private static void changePass(){
+        System.out.println("Input old password");
+        String oldPass = scanPassword();
+        if(user.getPassword().equals(castToBytes(oldPass))){
+            user.setPassword(createPass());
+        }
+    }
+
+    private static byte[] createPass(){
+        String pass;
+        String secondPass;
+        boolean flag1;
+        boolean flag2;
+        do {
+            do {
+                System.out.print("Input password: ");
+                pass = scanPassword();
+                if (pass.length() < MIN_PASS_LENGTH) {
+                    System.out.println("Your password is too short");
+                    flag1 = true;
+                } else {
+                    flag1 = false;
+                }
+            } while (flag1);
+
+            System.out.print("Confirm password: ");
+            secondPass = scanPassword();
+            if(secondPass.equals(pass)){
+                flag2 = true;
+            } else {
+                flag2 = false;
+                System.out.println("Passwords do not match. Try again.");
+            }
+        } while (!flag2);
+
+        return castToBytes(pass);
+    }
+
+    private static byte[] castToBytes(String s){
+        byte b[] = new byte[s.length()];
+        for (int i = 0; i < s.length(); i++) {
+            b[i] = (byte)s.charAt(i);
+        }
+        return b;
     }
 
     private static void authUser(String login, byte[] pass) {
@@ -121,9 +168,10 @@ class Application {
         return login;
     }
 
+
     private static String scanPassword() throws IllegalArgumentException {
-        Scanner sc = new Scanner(System.in);
         System.out.print("Input password: ");
+        Scanner sc = new Scanner(System.in);
         String password;
         if (sc.hasNext()) {
             password = sc.nextLine();
