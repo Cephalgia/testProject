@@ -51,16 +51,18 @@ class UserThread extends Thread {
                 }
                 break;
             case "nano":
-                if((path[0].equals("C") && user.getDiscPermission()[0] == User.PermissionLevel.WRITE) ||
-                        (path[0].equals("B") && user.getDiscPermission()[1] == User.PermissionLevel.WRITE)){
+                if((path[0].equals("C") && (user.getDiscPermission()[0] == User.PermissionLevel.WRITE ||
+                        user.getDiscPermission()[0] == User.PermissionLevel.EXECUTE)) ||
+                        (path[0].equals("B") && (user.getDiscPermission()[1] == User.PermissionLevel.WRITE ||
+                                user.getDiscPermission()[1] == User.PermissionLevel.EXECUTE))){
                     user.setAccessType(User.SystemAccess.Allow);
                 } else {
                     user.setAccessType(User.SystemAccess.Deny);
                 }
                 break;
             case "sh":
-                if((path[0].equals("C") && user.getDiscPermission()[0] != User.PermissionLevel.EXECUTE) ||
-                        (path[0].equals("B") && user.getDiscPermission()[1] != User.PermissionLevel.EXECUTE)){
+                if((path[0].equals("C") && user.getDiscPermission()[0] == User.PermissionLevel.EXECUTE) ||
+                        (path[0].equals("B") && user.getDiscPermission()[1] == User.PermissionLevel.EXECUTE)){
                     user.setAccessType(User.SystemAccess.Allow);
                 } else {
                     user.setAccessType(User.SystemAccess.Deny);
