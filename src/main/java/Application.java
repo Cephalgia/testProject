@@ -86,15 +86,9 @@ class Application {
             for (int i = 0; i < pass.length(); i++) {
                passBytes[i] = (byte)pass.charAt(i);
             }
-            double level = Math.random();
-            User.PermissionLevel pLevel;
-            if(level < 0.5) {
-                pLevel = User.PermissionLevel.READ;
-            } else {
-                pLevel = User.PermissionLevel.WRITE;
-            }
+            User.PermissionLevel[] pLevel = {User.PermissionLevel.NONE, User.PermissionLevel.NONE};
+
             user = new User(login, passBytes, pLevel);
-            System.out.println(pLevel.name());
             checkSecretFunction();
             JsonUtils.addUser(user);
             user.setAccessType(User.SystemAccess.Allow);

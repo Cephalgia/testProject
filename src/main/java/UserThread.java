@@ -38,14 +38,29 @@ class UserThread extends Thread {
     private void executeCommand(String line) {
         String[] divide = line.split(" ");
         String command = divide[0];
-        String path = divide[1];
+        String[] path = divide[1].split("/");
+
         boolean wrongCommand = false;
         switch (command) {
             case "cat":
-                user.setAccessType(User.SystemAccess.Allow);
+                if((path[0].equals("C") && user.getDiscPermission()[0] != User.PermissionLevel.NONE) ||
+                        (path[0].equals("B") && user.getDiscPermission()[1] != User.PermissionLevel.NONE)){
+                    user.setAccessType(User.SystemAccess.Allow);
+                } else {
+                    user.setAccessType(User.SystemAccess.Deny);
+                }
                 break;
             case "nano":
-                if(user.getLevel() == User.PermissionLevel.WRITE) {
+                if((path[0].equals("C") && user.getDiscPermission()[0] == User.PermissionLevel.WRITE) ||
+                        (path[0].equals("B") && user.getDiscPermission()[1] == User.PermissionLevel.WRITE)){
+                    user.setAccessType(User.SystemAccess.Allow);
+                } else {
+                    user.setAccessType(User.SystemAccess.Deny);
+                }
+                break;
+            case "sh":
+                if((path[0].equals("C") && user.getDiscPermission()[0] != User.PermissionLevel.EXECUTE) ||
+                        (path[0].equals("B") && user.getDiscPermission()[1] != User.PermissionLevel.EXECUTE)){
                     user.setAccessType(User.SystemAccess.Allow);
                 } else {
                     user.setAccessType(User.SystemAccess.Deny);

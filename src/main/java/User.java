@@ -8,11 +8,12 @@ class User {
     private final byte[] password;
     private SystemAccess accessType;
     private PermissionLevel level;
+    private PermissionLevel[] discPermission;
 
-    User(String login, byte[] password, PermissionLevel level) {
+    User(String login, byte[] password, PermissionLevel[] permissions) {
         this.login = login;
         this.password = password;
-        this.level = level;
+        this.discPermission = permissions;
     }
 
     enum SystemAccess {
@@ -21,8 +22,10 @@ class User {
     }
 
     enum PermissionLevel {
+        NONE,
         READ,
-        WRITE
+        WRITE,
+        EXECUTE
     }
 
     String getLogin() {
@@ -43,5 +46,13 @@ class User {
 
     public PermissionLevel getLevel() {
         return level;
+    }
+
+    public PermissionLevel[] getDiscPermission() {
+        return discPermission;
+    }
+
+    public void setDiscPermission(PermissionLevel[] discPermission) {
+        this.discPermission = discPermission;
     }
 }
