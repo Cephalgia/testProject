@@ -16,6 +16,8 @@ class UserThread extends Thread {
     @Override
     public void run() {
         boolean flag = true;
+        System.out.println("USER: " + user.getLogin());
+        new TimeOutThread(this);
         do {
             if(commandCounter == commandInterval) {
                 if(Application.repeatChecking()) {
@@ -24,7 +26,6 @@ class UserThread extends Thread {
                 commandCounter = 0;
             }
             commandCounter++;
-            System.out.println("USER: " + user.getLogin());
             System.out.println("Input command: >");
             String command = "";
             Scanner sc = new Scanner(System.in);
@@ -38,19 +39,67 @@ class UserThread extends Thread {
     private void executeCommand(String line) {
         String[] divide = line.split(" ");
         String command = divide[0];
+
+
+
+
         if(divide.length < 2){
             System.out.println("Wrong command format");
             return;
         }
 
+        if(command.equals("chmod")){
+            if(JsonUtils.getUser(divide[1]).equals(null)){
+                System.out.println("No user with login " + divide[1]);
+            } else {
+                if(divide.length >=4){
+                    User patient = JsonUtils.getUser(divide[1]);
+                    int discNum;
+
+                    switch (divide[2]){
+                        case "c":
+                        case "C":
+                            discNum = 0;
+                            break;
+                        case "d":
+                        case "D":
+                            discNum = 1;
+                            break;
+                        case "e":
+                        case "E":
+                            discNum = 2;
+                            break;
+                        default:
+                            System.out.println("Disc " + divide[2] + " not found");
+                            return;
+                    }
+
+                    switch (divide[3]){
+                        case "r": patient.getDiscPermission()[discNum] = User.PermissionLevel.READ;
+                            break;
+                        case "w": patient.getDiscPermission()[discNum] = User.PermissionLevel.WRITE;
+                            break;
+                        case "e": patient.getDiscPermission()[discNum] = User.PermissionLevel.EXECUTE;
+                            break;
+                        case "n": patient.getDiscPermission()[discNum] = User.PermissionLevel.NONE;
+                            break;
+                    }
+                    JsonUtils.changeUser(patient);
+                    System.out.println("User " + divide[2] + " now has " + patient.getDiscPermission()[discNum] + "for disc" + divide[3]);
+                } else {
+                    System.out.println("Wrong arguments");
+                }
+            }
+            return;
+        }
 
         String[] path = divide[1].split("/");
 
         boolean wrongCommand = false;
         switch (command) {
             case "cat":
-                if((path[0].equals("C") && user.getDiscPermission()[0] != User.PermissionLevel.NONE) ||
-                        (path[0].equals("B") && user.getDiscPermission()[1] != User.PermissionLevel.NONE)){
+                if((path[0].equals("C") && user.getDiscPermission()[0].compareTo(User.PermissionLevel.NONE)>0) ||
+                        (path[0].equals("B") && user.getDiscPermission()[1].compareTo(User.PermissionLevel.NONE)>0)){
                     user.setAccessType(User.SystemAccess.Allow);
                 } else {
                     user.setAccessType(User.SystemAccess.Deny);

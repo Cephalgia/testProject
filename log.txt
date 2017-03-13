@@ -24,4 +24,18 @@ Access denied. Mon Mar 13 18:48:42 EET 2017 User name; tried to get access to th
 Mon Mar 13 18:49:13 EET 2017  User name; got access to the file [Ljava.lang.String;@1deddeb6; Status: Allow
 Mon Mar 13 18:50:59 EET 2017  User name; got access to the file [Ljava.lang.String;@7b81ba32; Status: Allow
 Access denied. Mon Mar 13 18:52:19 EET 2017 User name; tried to get access to the file [Ljava.lang.String;@61bbde52
-Mon Mar 13 19:49:37 EET 2017 User lal registered
+Mon Mar 13 19:49:37 EET 2017 User lal registeredMon Mar 13 20:07:23 EET 2017 User name registeredMon Mar 13 20:08:30 EET 2017 User name registeredMon Mar 13 20:09:02 EET 2017 User name registeredMon Mar 13 20:11:18 EET 2017 User executor registeredAccess denied. Mon Mar 13 20:12:06 EET 2017 User name; tried to get access to the file [Ljava.lang.String;@58ff3e21
+Mon Mar 13 20:12:12 EET 2017  User name; got access to the file [Ljava.lang.String;@7016bb3; Status: Allow
+Access denied. Mon Mar 13 20:12:22 EET 2017 User name; tried to get access to the file [Ljava.lang.String;@9f30b52
+Mon Mar 13 20:25:07 EET 2017 User bb registeredMon Mar 13 20:29:20 EET 2017 User nana registeredMon Mar 13 20:29:54 EET 2017  User nana; got access to the file [Ljava.lang.String;@281d1312; Status: Allow
+Mon Mar 13 20:30:21 EET 2017  User nana; got access to the file [Ljava.lang.String;@26daf861; Status: Allow
+Access denied. Mon Mar 13 20:30:35 EET 2017 User nana; tried to get access to the file [Ljava.lang.String;@22e57862
+Access denied. Mon Mar 13 20:31:48 EET 2017 User name; tried to get access to the file [Ljava.lang.String;@15196d6f
+Access denied. Mon Mar 13 20:31:53 EET 2017 User name; tried to get access to the file [Ljava.lang.String;@5a7fede9
+Mon Mar 13 21:13:33 EET 2017 User name registeredMon Mar 13 21:35:16 EET 2017 User lol registeredMon Mar 13 21:47:21 EET 2017 User ro registeredMon Mar 13 21:49:30 EET 2017 User ro registeredMon Mar 13 21:50:54 EET 2017 User ro registeredAccess denied. Mon Mar 13 22:21:42 EET 2017 User ro; tried to get access to the file [Ljava.lang.String;@4c84f613
+Access denied. Mon Mar 13 22:21:50 EET 2017 User ro; tried to get access to the file [Ljava.lang.String;@7ab7b4de
+Mon Mar 13 22:22:14 EET 2017  User ro; got access to the file [Ljava.lang.String;@1d9cb0be; Status: Allow
+Mon Mar 13 22:23:24 EET 2017  User ro; got access to the file [Ljava.lang.String;@45ca4c9f; Status: Allow
+Mon Mar 13 22:23:32 EET 2017  User ro; got access to the file [Ljava.lang.String;@45a4a1b8; Status: Allow
+Access denied. Mon Mar 13 22:23:36 EET 2017 User ro; tried to get access to the file [Ljava.lang.String;@145b4410
+Access denied. Mon Mar 13 22:23:40 EET 2017 User ro; tried to get access to the file [Ljava.lang.String;@29d058e7

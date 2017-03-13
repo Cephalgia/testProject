@@ -37,12 +37,24 @@ class JsonUtils {
         return users;
     }
 
-    static void addUser(User user) throws RuntimeException {
+    static void addUser(User user) {
         try {
             List<User> users = getUsers();
             users.add(user);
             Gson gson = new GsonBuilder().create();
             String json = gson.toJson(users);
+            FileWriter fileWriter = new FileWriter(usersFile);
+            fileWriter.write(json);
+            fileWriter.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    static void refresh() {
+        try {
+            Gson gson = new GsonBuilder().create();
+            String json = gson.toJson(getUsers());
             FileWriter fileWriter = new FileWriter(usersFile);
             fileWriter.write(json);
             fileWriter.close();
@@ -72,5 +84,25 @@ class JsonUtils {
 
     public static int getUsersNum() {
         return getUsers().size();
+    }
+
+    public static void changeUser(User cu){
+
+            List<User> users = getUsers();
+            for (User u: users){
+                if(u.getLogin().equals(cu.getLogin())){
+                    users.remove(u);
+                    users.add(cu);
+                    try {
+                        Gson gson = new GsonBuilder().create();
+                        String json = gson.toJson(users);
+                        FileWriter fileWriter = new FileWriter(usersFile);
+                        fileWriter.write(json);
+                        fileWriter.close();
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
     }
 }
