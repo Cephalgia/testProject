@@ -1,0 +1,14 @@
+Tue Feb 28 23:07:56 EET 2017  User qwer; got access to the file natas.txt; Status: Allow
+Tue Feb 28 23:08:19 EET 2017  User qwer; got access to the file natas.txt; Status: Allow
+Tue Feb 28 23:13:51 EET 2017  User qwer; got access to the file ty.zip; Status: Allow
+Tue Feb 28 23:19:40 EET 2017  User cad; got access to the file fl.txt; Status: Allow
+Access denied. Tue Feb 28 23:19:59 EET 2017 User cad; tried to get access to the file fl.zt
+Access denied. Tue Feb 28 23:23:14 EET 2017 User zxc; tried to get access to the file vb.xc
+Tue Feb 28 23:23:24 EET 2017  User zxc; got access to the file fgh.7z; Status: Allow
+Tue Feb 28 23:25:50 EET 2017  User cad; got access to the file fghg; Status: Allow
+Access denied. Tue Feb 28 23:25:57 EET 2017 User cad; tried to get access to the file ghk
+Tue Feb 28 23:28:47 EET 2017  User qwer; got access to the file yh; Status: Allow
+Tue Feb 28 23:28:53 EET 2017  User qwer; got access to the file sf; Status: Allow
+Tue Feb 28 23:30:17 EET 2017  User dfg; got access to the file fg; Status: Allow
+Tue Feb 28 23:30:20 EET 2017  User dfg; got access to the file fg; Status: Allow
+Tue Feb 28 23:30:24 EET 2017  User dfg; got access to the file jkl; Status: Allow
