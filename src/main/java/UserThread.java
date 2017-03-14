@@ -90,7 +90,7 @@ class UserThread extends Thread {
                             break;
                     }
                     JsonUtils.changeUser(patient);
-                    System.out.println("User " + divide[2] + " now has " + patient.getDiscPermission()[discNum] + "for disc " + divide[2]);
+                    System.out.println("User " + divide[1] + " now has " + patient.getDiscPermission()[discNum] + "for disc " + divide[2]);
                 } else {
                     System.out.println("Wrong arguments");
                 }
