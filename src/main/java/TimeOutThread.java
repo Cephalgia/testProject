@@ -13,15 +13,15 @@ public class TimeOutThread extends Thread {
     public void run() {
         while (true) {
 //            parentThread.suspend();
-            if (!Application.repeatChecking()) {
-                System.out.println("all right");
-//                parentThread.resume();
+            System.out.println("hah");
+            Application.checkSecretFunction();
+//            parentThread.resume();
                 try {
-                    parentThread.join(3000);
+                    sleep(3000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
         }
     }
-}
+

@@ -6,8 +6,11 @@ import java.util.Scanner;
  */
 class UserThread extends Thread {
     private User user;
-    private int commandInterval = 3;
-    private int commandCounter = 0;
+//    private int commandInterval = 3;
+//    private int commandCounter = 0;
+
+    private final long TIME_INTERVAL = 60000 / 2;
+    private long lastTime = System.currentTimeMillis();
 
     UserThread(User user) {
         this.user = user;
@@ -17,21 +20,23 @@ class UserThread extends Thread {
     public void run() {
         boolean flag = true;
         System.out.println("USER: " + user.getLogin());
-        new TimeOutThread(this);
+//        new TimeOutThread(this);
         do {
-            if(commandCounter == commandInterval) {
-                if(Application.repeatChecking()) {
-                    flag = false;
-                }
-                commandCounter = 0;
-            }
-            commandCounter++;
+//            if(commandCounter == commandInterval) {
+//                if(Application.repeatChecking()) {
+//                    flag = false;
+//                }
+//                commandCounter = 0;
+//            }
+//            commandCounter++;
+            isTimeOut();
             System.out.println("Input command: >");
             String command = "";
             Scanner sc = new Scanner(System.in);
             if (sc.hasNext()) {
                 command = sc.nextLine();
             }
+            isTimeOut();
             executeCommand(command);
         } while (flag);
     }
@@ -57,15 +62,15 @@ class UserThread extends Thread {
                     int discNum;
 
                     switch (divide[2]){
-                        case "c":
+//                        case "c":
                         case "C":
                             discNum = 0;
                             break;
-                        case "d":
+//                        case "d":
                         case "D":
                             discNum = 1;
                             break;
-                        case "e":
+//                        case "e":
                         case "E":
                             discNum = 2;
                             break;
@@ -85,7 +90,7 @@ class UserThread extends Thread {
                             break;
                     }
                     JsonUtils.changeUser(patient);
-                    System.out.println("User " + divide[2] + " now has " + patient.getDiscPermission()[discNum] + "for disc" + divide[3]);
+                    System.out.println("User " + divide[2] + " now has " + patient.getDiscPermission()[discNum] + "for disc " + divide[2]);
                 } else {
                     System.out.println("Wrong arguments");
                 }
@@ -99,25 +104,26 @@ class UserThread extends Thread {
         switch (command) {
             case "cat":
                 if((path[0].equals("C") && user.getDiscPermission()[0].compareTo(User.PermissionLevel.NONE)>0) ||
-                        (path[0].equals("B") && user.getDiscPermission()[1].compareTo(User.PermissionLevel.NONE)>0)){
+                        (path[0].equals("D") && user.getDiscPermission()[1].compareTo(User.PermissionLevel.NONE)>0) ||
+                        (path[0].equals("E") && user.getDiscPermission()[2].compareTo(User.PermissionLevel.NONE)>0)){
                     user.setAccessType(User.SystemAccess.Allow);
                 } else {
                     user.setAccessType(User.SystemAccess.Deny);
                 }
                 break;
             case "nano":
-                if((path[0].equals("C") && (user.getDiscPermission()[0] == User.PermissionLevel.WRITE ||
-                        user.getDiscPermission()[0] == User.PermissionLevel.EXECUTE)) ||
-                        (path[0].equals("B") && (user.getDiscPermission()[1] == User.PermissionLevel.WRITE ||
-                                user.getDiscPermission()[1] == User.PermissionLevel.EXECUTE))){
+                if((path[0].equals("C") && user.getDiscPermission()[0].compareTo(User.PermissionLevel.WRITE)>-1) ||
+                        (path[0].equals("D") && user.getDiscPermission()[1].compareTo(User.PermissionLevel.WRITE)>-1) ||
+                        (path[0].equals("E") && user.getDiscPermission()[2].compareTo(User.PermissionLevel.WRITE)>-1)){
                     user.setAccessType(User.SystemAccess.Allow);
                 } else {
                     user.setAccessType(User.SystemAccess.Deny);
                 }
                 break;
             case "sh":
-                if((path[0].equals("C") && user.getDiscPermission()[0] == User.PermissionLevel.EXECUTE) ||
-                        (path[0].equals("B") && user.getDiscPermission()[1] == User.PermissionLevel.EXECUTE)){
+                if((path[0].equals("C") && user.getDiscPermission()[0].compareTo(User.PermissionLevel.EXECUTE)>-1) ||
+                        (path[0].equals("D") && user.getDiscPermission()[1].compareTo(User.PermissionLevel.EXECUTE)>-1) ||
+                        (path[0].equals("E") && user.getDiscPermission()[2].compareTo(User.PermissionLevel.EXECUTE)>-1)){
                     user.setAccessType(User.SystemAccess.Allow);
                 } else {
                     user.setAccessType(User.SystemAccess.Deny);
@@ -138,6 +144,13 @@ class UserThread extends Thread {
             }
         }
 
+    }
+
+    private void isTimeOut() {
+        if (System.currentTimeMillis() - lastTime >= TIME_INTERVAL) {
+            lastTime = System.currentTimeMillis();
+            Application.checkSecretFunction();
+        }
     }
 
 }

@@ -14,6 +14,8 @@ class Application {
     private static User user;
     public static final int MIN_PASS_LENGTH = 6;
     public static final int MAX_USERS_NUM = 6;
+    public static final int MAX_SECRET_FUNCTION_TRY_NUM = 3;
+
 
     private static float secretFunction(int x){
         return x*x;
@@ -38,11 +40,24 @@ class Application {
         return fail;
     }
 
-    private static void checkSecretFunction() throws IllegalArgumentException {
+    public static void checkSecretFunction() throws IllegalArgumentException {
         short x = (short)(Math.random()*10);
+        float secretValue;
         System.out.println("Enter secret answer (request = " + x + " ) ");
-        float secretValue = scanSecretFunction();
-        checkSecretAnswer(x, secretValue);
+        boolean flag;
+        int cnt = 0;
+        do {
+            secretValue = scanSecretFunction();
+            flag = checkSecretAnswer(x, secretValue);
+            if (!flag){
+                cnt++;
+            }
+            if(cnt >= MAX_SECRET_FUNCTION_TRY_NUM){
+                changePass();
+                flag = true;
+            }
+        }while (!flag);
+
     }
 
     static User authenticate() {
@@ -56,7 +71,7 @@ class Application {
                     passBytes[i] = (byte) pass.charAt(i);
                 }
                 authUser(login, passBytes);
-                checkSecretFunction();
+//                checkSecretFunction();
                 user = JsonUtils.getUser(login);
                 user.setAccessType(User.SystemAccess.Allow);
                 successAuth();
@@ -66,10 +81,10 @@ class Application {
         }
         return user;
     }
-    private static void checkSecretAnswer(short secretRequest, float secretAnswer) throws IllegalArgumentException {
-        if ((secretFunction(secretRequest)) != secretAnswer) {
-            throw new IllegalArgumentException("Incorrect secret answer");
-        }
+    private static boolean checkSecretAnswer(short secretRequest, float secretAnswer) throws IllegalArgumentException {
+        return ((secretFunction(secretRequest)) == secretAnswer) ;
+
+//            throw new IllegalArgumentException("Incorrect secret answer");
     }
 
     private static void successAuth() {
@@ -84,7 +99,7 @@ class Application {
             boolean flag1;
             boolean flag2;
             byte[] passBytes = createPass();
-            User.PermissionLevel[] pLevel = {User.PermissionLevel.NONE, User.PermissionLevel.NONE};
+            User.PermissionLevel[] pLevel = {User.PermissionLevel.NONE, User.PermissionLevel.NONE, User.PermissionLevel.NONE};
 
             user = new User(login, passBytes, pLevel);
             checkSecretFunction();
@@ -101,12 +116,32 @@ class Application {
         return user;
     }
 
-    private static void changePass(){
+    private static boolean changePass(){
         System.out.println("Input old password");
-        String oldPass = scanPassword();
-        if(user.getPassword().equals(castToBytes(oldPass))){
-            user.setPassword(createPass());
-        }
+        String oldPass;
+        byte[] oldPassByte;
+        boolean flag = false;
+        boolean equals = false;
+        do {
+            oldPass = justScan();
+            oldPassByte = castToBytes(oldPass);
+            if (oldPassByte.length == user.getPassword().length) {
+                for (int i = 0; i < user.getPassword().length; i++) {
+                    if (oldPassByte[i] != user.getPassword()[i]) {
+                        equals = false;
+                        break;
+                    }
+                }
+                equals = true;
+            } else equals = false;
+            if (equals) {
+                user.setPassword(createPass());
+//                JsonUtils.changeUser(user);    don't open. dead inside
+                System.out.println("nice");
+                flag = true;
+            } else System.out.println("False. Try again");
+        } while (!flag);
+        return true;
     }
 
     private static byte[] createPass(){
@@ -117,7 +152,7 @@ class Application {
         do {
             do {
                 System.out.print("Input password: ");
-                pass = scanPassword();
+                pass = justScan();
                 if (pass.length() < MIN_PASS_LENGTH) {
                     System.out.println("Your password is too short");
                     flag1 = true;
@@ -127,7 +162,7 @@ class Application {
             } while (flag1);
 
             System.out.print("Confirm password: ");
-            secondPass = scanPassword();
+            secondPass = justScan();
             if(secondPass.equals(pass)){
                 flag2 = true;
             } else {
@@ -171,6 +206,18 @@ class Application {
 
     private static String scanPassword() throws IllegalArgumentException {
         System.out.print("Input password: ");
+        Scanner sc = new Scanner(System.in);
+        String password;
+        if (sc.hasNext()) {
+            password = sc.nextLine();
+
+        } else {
+            throw new IllegalArgumentException("Invalid password value");
+        }
+        return password;
+    }
+
+    private static String justScan() throws IllegalArgumentException {
         Scanner sc = new Scanner(System.in);
         String password;
         if (sc.hasNext()) {

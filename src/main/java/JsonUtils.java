@@ -91,8 +91,9 @@ class JsonUtils {
             List<User> users = getUsers();
             for (User u: users){
                 if(u.getLogin().equals(cu.getLogin())){
-                    users.remove(u);
-                    users.add(cu);
+//                    users.remove(u);
+//                    users.add(cu);
+
                     try {
                         Gson gson = new GsonBuilder().create();
                         String json = gson.toJson(users);
