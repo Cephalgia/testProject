@@ -1,8 +1,5 @@
 import java.io.*;
 
-/**
- * Created by Karina on 26.02.2017.
- */
 
 class FileUtils {
     private final static File logFile = new File("log.txt");

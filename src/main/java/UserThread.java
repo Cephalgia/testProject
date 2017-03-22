@@ -1,9 +1,6 @@
 import java.util.Calendar;
 import java.util.Scanner;
 
-/**
- * Created by Karina on 26.02.2017.
- */
 class UserThread extends Thread {
     private User user;
 //    private int commandInterval = 3;
@@ -20,15 +17,7 @@ class UserThread extends Thread {
     public void run() {
         boolean flag = true;
         System.out.println("USER: " + user.getLogin());
-//        new TimeOutThread(this);
         do {
-//            if(commandCounter == commandInterval) {
-//                if(Application.repeatChecking()) {
-//                    flag = false;
-//                }
-//                commandCounter = 0;
-//            }
-//            commandCounter++;
             isTimeOut();
             System.out.println("Input command: >");
             String command = "";
@@ -44,10 +33,6 @@ class UserThread extends Thread {
     private void executeCommand(String line) {
         String[] divide = line.split(" ");
         String command = divide[0];
-
-
-
-
         if(divide.length < 2){
             System.out.println("Wrong command format");
             return;
@@ -62,17 +47,13 @@ class UserThread extends Thread {
                     int discNum;
 
                     switch (divide[2]){
-//                        case "c":
-                        case "C":
-                            discNum = 0;
-                            break;
 //                        case "d":
                         case "D":
-                            discNum = 1;
+                            discNum = 0;
                             break;
-//                        case "e":
-                        case "E":
-                            discNum = 2;
+//                        case "c":
+                        case "C":
+                            discNum = 1;
                             break;
                         default:
                             System.out.println("Disc " + divide[2] + " not found");
@@ -90,7 +71,7 @@ class UserThread extends Thread {
                             break;
                     }
                     JsonUtils.changeUser(patient);
-                    System.out.println("User " + divide[2] + " now has " + patient.getDiscPermission()[discNum] + "for disc " + divide[2]);
+                    System.out.println("User " + divide[1] + " has now " + patient.getDiscPermission()[discNum] + " permission for disc " + divide[2]);
                 } else {
                     System.out.println("Wrong arguments");
                 }
@@ -103,27 +84,24 @@ class UserThread extends Thread {
         boolean wrongCommand = false;
         switch (command) {
             case "cat":
-                if((path[0].equals("C") && user.getDiscPermission()[0].compareTo(User.PermissionLevel.NONE)>0) ||
-                        (path[0].equals("D") && user.getDiscPermission()[1].compareTo(User.PermissionLevel.NONE)>0) ||
-                        (path[0].equals("E") && user.getDiscPermission()[2].compareTo(User.PermissionLevel.NONE)>0)){
+                if((path[0].equals("D") && user.getDiscPermission()[0].compareTo(User.PermissionLevel.NONE)>0) ||
+                        (path[0].equals("C") && user.getDiscPermission()[1].compareTo(User.PermissionLevel.NONE)>0)){
                     user.setAccessType(User.SystemAccess.Allow);
                 } else {
                     user.setAccessType(User.SystemAccess.Deny);
                 }
                 break;
             case "nano":
-                if((path[0].equals("C") && user.getDiscPermission()[0].compareTo(User.PermissionLevel.WRITE)>-1) ||
-                        (path[0].equals("D") && user.getDiscPermission()[1].compareTo(User.PermissionLevel.WRITE)>-1) ||
-                        (path[0].equals("E") && user.getDiscPermission()[2].compareTo(User.PermissionLevel.WRITE)>-1)){
+                if((path[0].equals("D") && user.getDiscPermission()[0].compareTo(User.PermissionLevel.WRITE)>-1) ||
+                        (path[0].equals("C") && user.getDiscPermission()[1].compareTo(User.PermissionLevel.WRITE)>-1)){
                     user.setAccessType(User.SystemAccess.Allow);
                 } else {
                     user.setAccessType(User.SystemAccess.Deny);
                 }
                 break;
             case "sh":
-                if((path[0].equals("C") && user.getDiscPermission()[0].compareTo(User.PermissionLevel.EXECUTE)>-1) ||
-                        (path[0].equals("D") && user.getDiscPermission()[1].compareTo(User.PermissionLevel.EXECUTE)>-1) ||
-                        (path[0].equals("E") && user.getDiscPermission()[2].compareTo(User.PermissionLevel.EXECUTE)>-1)){
+                if((path[0].equals("D") && user.getDiscPermission()[0].compareTo(User.PermissionLevel.EXECUTE)>-1) ||
+                        (path[0].equals("C") && user.getDiscPermission()[1].compareTo(User.PermissionLevel.EXECUTE)>-1)){
                     user.setAccessType(User.SystemAccess.Allow);
                 } else {
                     user.setAccessType(User.SystemAccess.Deny);
@@ -137,10 +115,10 @@ class UserThread extends Thread {
             String time = Calendar.getInstance().getTime().toString();
             if (user.getPermissionType() == User.SystemAccess.Allow) {
                 System.out.println("Access granted");
-                FileUtils.writeLog(time + "  User " + user.getLogin() + "; got access to the file " + path + "; Status: " + user.getPermissionType().name() + "\n");
+                FileUtils.writeLog(time + "  User " + user.getLogin() + "; got access to the file " + divide[1] + "; Status: " + user.getPermissionType().name() + "\n");
             } else {
                 System.out.println("Access denied");
-                FileUtils.writeLog("Access denied. " + time + " User " + user.getLogin() + "; tried to get access to the file " + path + "\n");
+                FileUtils.writeLog(time + " User " + user.getLogin() + "; tried to get access to the file " + divide[1] + ". Status: Deny" + "\n");
             }
         }
 

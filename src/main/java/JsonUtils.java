@@ -15,9 +15,6 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by Karina on 26.02.2017.
- */
 class JsonUtils {
 
     private static File usersFile = new File("users.json");
@@ -91,8 +88,8 @@ class JsonUtils {
             List<User> users = getUsers();
             for (User u: users){
                 if(u.getLogin().equals(cu.getLogin())){
-//                    users.remove(u);
-//                    users.add(cu);
+                    users.remove(u);
+                    users.add(cu);
 
                     try {
                         Gson gson = new GsonBuilder().create();

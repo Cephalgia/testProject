@@ -1,8 +1,5 @@
 import java.util.Collection;
 
-/**
- * Created by Karina on 26.02.2017.
- */
 class User {
     private final String login;
     private byte[] password;

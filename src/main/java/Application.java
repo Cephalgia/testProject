@@ -3,41 +3,17 @@ import java.util.Calendar;
 import java.util.Scanner;
 import java.util.concurrent.ScheduledExecutorService;
 
-/**
- * Created by Andrew on 22.10.2016.
- */
 class Application {
 
-    private static ScheduledExecutorService executorService;
-    private static int failedNumber = 0;
-    private static final int failedCount = 5;
     private static User user;
-    public static final int MIN_PASS_LENGTH = 6;
-    public static final int MAX_USERS_NUM = 6;
-    public static final int MAX_SECRET_FUNCTION_TRY_NUM = 3;
+    public static final int MIN_PASS_LENGTH = 4;
+    public static final int MAX_USERS_NUM = 9;
+    public static final int MAX_SECRET_FUNCTION_TRY_NUM = 5;
 
 
     private static float secretFunction(int x){
         return x*x;
-//        return (float) (10*Math.sin((x)));
-//        return (float) (Math.sin((10*x)));
-    }
-
-
-    public static boolean repeatChecking() {
-        boolean fail = false;
-        try {
-            checkSecretFunction();
-        } catch (IllegalArgumentException e) {
-            failedNumber++;
-            if (failedCount > failedNumber) {
-                repeatChecking();
-            } else {
-                fail = true;
-                System.err.println(e.getMessage());
-            }
-        }
-        return fail;
+//        return (float) (Math.tan(x*4));
     }
 
     public static void checkSecretFunction() throws IllegalArgumentException {
@@ -62,20 +38,21 @@ class Application {
 
     static User authenticate() {
         try {
-            boolean flag = false;
+            boolean flag;
+            String login;
             do {
-                String login = scanLogin();
+                login = scanLogin();
                 String pass = scanPassword();
                 byte[] passBytes = new byte[pass.length()];
                 for (int i = 0; i < pass.length(); i++) {
                     passBytes[i] = (byte) pass.charAt(i);
                 }
-                authUser(login, passBytes);
-//                checkSecretFunction();
-                user = JsonUtils.getUser(login);
-                user.setAccessType(User.SystemAccess.Allow);
-                successAuth();
-            } while(flag);
+                flag = authUser(login, passBytes);
+
+            } while(!flag);
+            user = JsonUtils.getUser(login);
+            user.setAccessType(User.SystemAccess.Allow);
+            successAuth();
         } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
         }
@@ -84,11 +61,10 @@ class Application {
     private static boolean checkSecretAnswer(short secretRequest, float secretAnswer) throws IllegalArgumentException {
         return ((secretFunction(secretRequest)) == secretAnswer) ;
 
-//            throw new IllegalArgumentException("Incorrect secret answer");
     }
 
     private static void successAuth() {
-        System.out.println("\nSuccess auth!\n");
+        System.out.println("\nAuthentification successful\n");
     }
 
     static User registerNewUser() {
@@ -112,7 +88,7 @@ class Application {
         }
 
         String time = Calendar.getInstance().getTime().toString();
-        FileUtils.writeLog(time + " User " + user.getLogin() + " registered");
+        FileUtils.writeLog(time + " Account " + user.getLogin() + " created");
         return user;
     }
 
@@ -137,7 +113,6 @@ class Application {
             if (equals) {
                 user.setPassword(createPass());
 //                JsonUtils.changeUser(user);    don't open. dead inside
-                System.out.println("nice");
                 flag = true;
             } else System.out.println("False. Try again");
         } while (!flag);
@@ -182,10 +157,13 @@ class Application {
         return b;
     }
 
-    private static void authUser(String login, byte[] pass) {
+    private static boolean authUser(String login, byte[] pass) {
         try {
-            if (!JsonUtils.isUserExist(login, pass))
-                throw new IllegalArgumentException("User does not exist");
+            if (!JsonUtils.isUserExist(login, pass)) {
+                System.out.println("User does not exist or the password is wrong");
+                return false;
+            }
+            return true;
         } catch (FileNotFoundException e) {
             throw new IllegalArgumentException("File does not exist");
         }
